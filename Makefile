@@ -32,7 +32,7 @@ OBJS := \
 # TOOLPREFIX = i386-jos-elf
 
 # Using native tools (e.g., on X86 Linux)
-#TOOLPREFIX = 
+#TOOLPREFIX =
 
 # Try to infer the correct TOOLPREFIX if not set
 ifndef TOOLPREFIX
@@ -188,6 +188,7 @@ UPROGS := \
 	_rm\
 	_sh\
 	_stressfs\
+	_test_mprotect_and_munprotect\
 	_usertests\
 	_wc\
 	_zombie\
@@ -197,7 +198,7 @@ fs.img: mkfs README $(UPROGS)
 
 -include *.d
 
-clean: 
+clean:
 	rm -f *.tex *.dvi *.idx *.aux *.log *.ind *.ilg \
 	*.o *.d *.asm *.sym vectors.S bootblock entryother \
 	initcode initcode.out kernel xv6.img fs.img kernelmemfs \
@@ -258,7 +259,7 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 # check in that version.
 
 EXTRA := \
-	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
+	mkfs.c ulib.c user.h cat.c echo.c forktest.c test_mprotect_and_munprotect.c grep.c kill.c\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
