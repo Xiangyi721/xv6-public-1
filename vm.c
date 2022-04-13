@@ -396,7 +396,6 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
 int
 mprotect(void* addr, int len)
 {
-  struct proc *curproc = myproc();
   int intAddr = (int)addr;
 
   //Check if addr is not page aligned
@@ -406,7 +405,7 @@ mprotect(void* addr, int len)
 
   // Check if addr points to a region that is not currently a part of the address space
   // or len is less or equal than zero
-  if(intAddr + len * PGSIZE > curproc -> vlimit || intAddr + len * PGSIZE < curproc -> vbase
+  if(intAddr + len * PGSIZE > myproc() -> vlimit || intAddr + len * PGSIZE < myproc() -> vbase
     || len <= 0){
     return -1;
   }
@@ -418,7 +417,7 @@ mprotect(void* addr, int len)
   while (i < (intAddr + len * PGSIZE)) {
     // Get the address of the PTE in the current process's page table
     // that corresponds to virtual address (i)
-    pte = walkpgdir(curproc->pgdir,(void*) i, 0);
+    pte = walkpgdir(myproc() -> pgdir, (void*) i, 0);
     if(pte && ((*pte & PTE_U) != 0) && ((*pte & PTE_P) != 0) ){
       *pte = (*pte) & (~PTE_W) ;
     }
@@ -427,7 +426,7 @@ mprotect(void* addr, int len)
     }
     i += PGSIZE;
   }
-  lcr3(V2P(curproc->pgdir));
+  lcr3(V2P(myproc() -> pgdir));
 
 return 0;
 
@@ -439,7 +438,6 @@ return 0;
 int
 munprotect(void* addr, int len)
 {
-  struct proc *curproc = myproc();
   int intAddr = (int)addr;
 
   //Check if addr is not page aligned
@@ -449,7 +447,7 @@ munprotect(void* addr, int len)
 
   // Check if addr points to a region that is not currently a part of the address space
   // or len is less or equal than zero
-  if(intAddr + len * PGSIZE > curproc -> vlimit || intAddr + len * PGSIZE < curproc -> vbase
+  if(intAddr + len * PGSIZE > myproc() -> vlimit || intAddr + len * PGSIZE < myproc() -> vbase
     || len <= 0){
     return -1;
   }
@@ -461,7 +459,7 @@ munprotect(void* addr, int len)
   while (i < (intAddr + len * PGSIZE)) {
     // Getthe address of the PTE in the current process's page table
     // that corresponds to virtual address (i)
-    pte = walkpgdir(curproc->pgdir,(void*) i, 0);
+    pte = walkpgdir(myproc() -> pgdir, (void*) i, 0);
     if(pte && ((*pte & PTE_U) != 0) && ((*pte & PTE_P) != 0) ){
       *pte = (*pte) | (PTE_W) ;
     }
@@ -470,7 +468,7 @@ munprotect(void* addr, int len)
     }
     i += PGSIZE;
   }
-  lcr3(V2P(curproc->pgdir));
+  lcr3(V2P(myproc() -> pgdir));
 
 return 0;
 }
