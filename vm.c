@@ -392,10 +392,89 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   return 0;
 }
 
-//PAGEBREAK!
-// Blank page.
-//PAGEBREAK!
-// Blank page.
-//PAGEBREAK!
-// Blank page.
+// Change the protection bits of parts of page table to read-only.
+int
+mprotect(void* addr, int len)
+{
+  struct proc *curproc = myproc();
+  int intAddr = (int)addr;
 
+  //Check if addr is not page aligned
+  if((int)(intAddr % PGSIZE )  != 0){
+    return -1;
+  }
+
+  // Check if addr points to a region that is not currently a part of the address space
+  // or len is less or equal than zero
+  if(intAddr + len * PGSIZE > curproc -> vlimit || len <= 0){
+    return -1;
+  }
+
+
+  //Loop each page
+  int i = intAddr;
+  pte_t* pte;
+  while (i < (intAddr + len * PGSIZE)) {
+    // Getthe address of the PTE in the current process's page table
+    // that corresponds to virtual address (i)
+    pte = walkpgdir(curproc->pgdir,(void*) i, 0);
+    if(pte && ((*pte & PTE_U) != 0) && ((*pte & PTE_P) != 0) ){
+      *pte = (*pte) & (~PTE_W) ;
+    }
+    else {
+      return -1;
+    }
+    i += PGSIZE;
+  }
+  lcr3(V2P(curproc->pgdir));
+  
+return 0;
+
+
+}
+
+// Change the page table to protection bits of parts of page table
+// to be both readable and writeable
+int
+munprotect(void* addr, int len)
+{
+  struct proc *curproc = myproc();
+  int intAddr = (int)addr;
+
+  //Check if addr is not page aligned
+  if((int)(intAddr % PGSIZE )  != 0){
+    return -1;
+  }
+
+  // Check if addr points to a region that is not currently a part of the address space
+  // or len is less or equal than zero
+  if(intAddr + len * PGSIZE > curproc -> vlimit || len <= 0){
+    return -1;
+  }
+
+
+  //Loop each page
+  int i = intAddr;
+  pte_t* pte;
+  while (i < (intAddr + len * PGSIZE)) {
+    // Getthe address of the PTE in the current process's page table
+    // that corresponds to virtual address (i)
+    pte = walkpgdir(curproc->pgdir,(void*) i, 0);
+    if(pte && ((*pte & PTE_U) != 0) && ((*pte & PTE_P) != 0) ){
+      *pte = (*pte) | (PTE_W) ;
+    }
+    else {
+      return -1;
+    }
+    i += PGSIZE;
+  }
+  lcr3(V2P(curproc->pgdir));
+
+return 0;
+
+//PAGEBREAK!
+// Blank page.
+//PAGEBREAK!
+// Blank page.
+//PAGEBREAK!
+// Blank page.

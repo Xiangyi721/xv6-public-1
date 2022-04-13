@@ -89,3 +89,28 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_mprotect(void)
+{
+  int addr = 0;
+  int len = 0;
+  if(argint(0, &addr) < 0 || argint(1, &len) < 0){
+    return -1;
+  }
+  else {
+    return mprotect((void*)addr, len);
+  }
+}
+
+int
+sys_munprotect(void){
+  int addr = 0;
+  int len = 0;
+  if(argint(0, &addr) < 0 || argint(1, &len) < 0){
+    return -1;
+  }
+  else {
+    return munprotect((void*)addr, len);
+  }
+}
