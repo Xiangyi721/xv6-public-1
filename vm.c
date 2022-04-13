@@ -406,7 +406,8 @@ mprotect(void* addr, int len)
 
   // Check if addr points to a region that is not currently a part of the address space
   // or len is less or equal than zero
-  if(intAddr + len * PGSIZE > curproc -> vlimit || len <= 0){
+  if(intAddr + len * PGSIZE > curproc -> vlimit || intAddr + len * PGSIZE < curproc -> vbase
+    || len <= 0){
     return -1;
   }
 
@@ -415,7 +416,7 @@ mprotect(void* addr, int len)
   int i = intAddr;
   pte_t* pte;
   while (i < (intAddr + len * PGSIZE)) {
-    // Getthe address of the PTE in the current process's page table
+    // Get the address of the PTE in the current process's page table
     // that corresponds to virtual address (i)
     pte = walkpgdir(curproc->pgdir,(void*) i, 0);
     if(pte && ((*pte & PTE_U) != 0) && ((*pte & PTE_P) != 0) ){
@@ -448,7 +449,8 @@ munprotect(void* addr, int len)
 
   // Check if addr points to a region that is not currently a part of the address space
   // or len is less or equal than zero
-  if(intAddr + len * PGSIZE > curproc -> vlimit || len <= 0){
+  if(intAddr + len * PGSIZE > curproc -> vlimit || intAddr + len * PGSIZE < curproc -> vbase
+    || len <= 0){
     return -1;
   }
 

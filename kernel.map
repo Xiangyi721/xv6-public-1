@@ -918,7 +918,7 @@ LOAD initcode
 LOAD entryother
 OUTPUT(kernel elf32-i386)
 
-.debug_line     0x0000000000000000     0x6e81
+.debug_line     0x0000000000000000     0x6e8b
  .debug_line    0x0000000000000000       0x41 entry.o
  .debug_line    0x0000000000000041      0x286 bio.o
  .debug_line    0x00000000000002c7      0x8fd console.o
@@ -947,7 +947,7 @@ OUTPUT(kernel elf32-i386)
  .debug_line    0x0000000000005ce0      0x2c3 trap.o
  .debug_line    0x0000000000005fa3      0x290 uart.o
  .debug_line    0x0000000000006233      0x32f vectors.o
- .debug_line    0x0000000000006562      0x91f vm.o
+ .debug_line    0x0000000000006562      0x929 vm.o
 
 .debug_info     0x0000000000000000    0x12507
  .debug_info    0x0000000000000000       0x26 entry.o

@@ -188,7 +188,7 @@ UPROGS := \
 	_rm\
 	_sh\
 	_stressfs\
-	_test_mprotect_and_munprotect\
+	_proctest\
 	_usertests\
 	_wc\
 	_zombie\
@@ -259,7 +259,7 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 # check in that version.
 
 EXTRA := \
-	mkfs.c ulib.c user.h cat.c echo.c forktest.c test_mprotect_and_munprotect.c grep.c kill.c\
+	mkfs.c ulib.c user.h cat.c echo.c forktest.c proctest.c grep.c kill.c\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
