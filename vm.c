@@ -427,7 +427,7 @@ mprotect(void* addr, int len)
     i += PGSIZE;
   }
   lcr3(V2P(curproc->pgdir));
-  
+
 return 0;
 
 
@@ -471,6 +471,7 @@ munprotect(void* addr, int len)
   lcr3(V2P(curproc->pgdir));
 
 return 0;
+}
 
 //PAGEBREAK!
 // Blank page.

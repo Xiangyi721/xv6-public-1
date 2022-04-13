@@ -295,9 +295,9 @@ LOAD entryother.o
 .debug_frame
  *(.debug_frame)
 
-.debug_str      0x0000000000000000       0x45
+.debug_str      0x0000000000000000       0x47
  *(.debug_str)
- .debug_str     0x0000000000000000       0x45 entryother.o
+ .debug_str     0x0000000000000000       0x47 entryother.o
 
 .debug_loc
  *(.debug_loc)

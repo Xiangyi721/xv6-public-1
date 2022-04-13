@@ -295,9 +295,9 @@ LOAD initcode.o
 .debug_frame
  *(.debug_frame)
 
-.debug_str      0x0000000000000000       0x43
+.debug_str      0x0000000000000000       0x45
  *(.debug_str)
- .debug_str     0x0000000000000000       0x43 initcode.o
+ .debug_str     0x0000000000000000       0x45 initcode.o
 
 .debug_loc
  *(.debug_loc)
